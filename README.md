@@ -22,9 +22,9 @@ This portfolio replaces a traditional degree. Every write-up here was accepted t
 
 | Year | Finding | Target | CVSS | Status |
 |---|---|---|---|---|
-| 2024 | [Three-Vulnerability Chain — Full Account Takeover](./writeup-02-chained-redirect-csrf-xss.md) | Fastweb S.p.A. | **8.8 High** | ✅ Hall of Fame |
-| 2025 | [Chained CSRF → Reflected XSS — Admin Panel](./writeup-01-chained-csrf-xss.md) | Fastweb S.p.A. | **9.3 Critical** | ✅ Hall of Fame |
-| 2026 | [Information Disclosure — Production Config Exposure](./writeup-03-info-disclosure-env-config.md) | Fastweb S.p.A. | **5.3 Medium** | ✅ Accepted · Pending Patch |
+| 2024 | [Three-Vulnerability Chain — Full Account Takeover](./writeups/writeup-02-chained-redirect-csrf-xss.md) | Fastweb S.p.A. | **8.8 High** | ✅ Hall of Fame |
+| 2025 | [Chained CSRF → Reflected XSS — Admin Panel](./writeups/writeup-01-chained-csrf-xss.md) | Fastweb S.p.A. | **9.3 Critical** | ✅ Hall of Fame |
+| 2026 | [Information Disclosure — Production Config Exposure](./writeups/writeup-03-info-disclosure-env-config.md) | Fastweb S.p.A. | **5.3 Medium** | ✅ Accepted · Pending Patch |
 | —   | Critical Vulnerability — Bug Bounty Program | Stanford University | **9.8 Critical** | ✅ Confirmed Valid · Duplicate |
 | —   | Reflected XSS | Picsart (HackerOne) | **5.6 Medium** | ✅ Resolved & Closed |
 | —   | Reflected XSS | University of Iceland (Open Bug Bounty) | **6.1 Medium** | ✅ ISO 29147 Coordinated |
