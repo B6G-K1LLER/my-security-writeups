@@ -24,7 +24,7 @@ This portfolio replaces a traditional degree. Every write-up here was accepted t
 |---|---|---|---|---|
 | 2024 | [Three-Vulnerability Chain — Full Account Takeover](./writeups/writeup-02-chained-redirect-csrf-xss.md) | Fastweb S.p.A. | **8.8 High** | ✅ Hall of Fame |
 | 2025 | [Chained CSRF → Reflected XSS — Admin Panel](./writeups/writeup-01-chained-csrf-xss.md) | Fastweb S.p.A. | **9.3 Critical** | ✅ Hall of Fame |
-| 2026 | [Information Disclosure — Production Config Exposure](./writeups/writeup-03-info-disclosure-env-config.md) | Fastweb S.p.A. | **5.3 Medium** | ✅ Accepted · Pending Patch |
+| 2026 | [Information Disclosure — Production Config Exposure](./writeups/writeup-03-info-disclosure-env-config.md) | Fastweb S.p.A. | **5.3 Medium** | ✅ Hall of Fame |
 | —   | Critical Vulnerability — Bug Bounty Program | Stanford University | **9.8 Critical** | ✅ Confirmed Valid · Duplicate |
 | —   | Reflected XSS | Picsart (HackerOne) | **5.6 Medium** | ✅ Resolved & Closed |
 | —   | Reflected XSS | University of Iceland (Open Bug Bounty) | **6.1 Medium** | ✅ ISO 29147 Coordinated |
@@ -149,7 +149,7 @@ This portfolio replaces a traditional degree. Every write-up here was accepted t
 Active across HackerOne, Bugcrowd, Intigriti, Open Bug Bounty, and Bugbounter.com. Confirmed findings include: paid bounty on Ticimax (Bugbounter.com, Report #I8435192), Medium-severity Reflected XSS on Picsart (HackerOne, CVSS 5.6), verified Reflected XSS on University of Iceland (Open Bug Bounty, CVSS 6.1, ISO 29147 coordinated), and independently verified findings on Nokia, DHL, InDrive, Ibotta, and Razer.
 
 **Penetration Tester — Vulnerability Disclosure Program** · Fastweb S.p.A. · Remote · 2024 – 2026  
-Three separate responsible disclosures across Fastweb's production infrastructure. Hall of Fame recognition for 2024 and 2025 findings. 2026 disclosure currently in remediation.
+Three separate responsible disclosures across Fastweb's production infrastructure. Hall of Fame recognition for 2024 & 2025 and 2026 findings.
 
 **Guest Speaker — Cyber Awareness Virtual Summit 1.0** · October 2025  
 Session: *"From Phishing Links to Fake Job Offers: How to Recognize Red Flags Instantly."* Covered homograph attacks, deceptive domain detection, and phishing recognition to an international audience of cybersecurity professionals.
