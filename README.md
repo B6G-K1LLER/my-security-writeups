@@ -10,6 +10,8 @@
 
 I'm a self-taught offensive security researcher with findings across major production environments since 2021 — starting at age 11. I don't just find bugs: I trace them to their root cause, chain low-severity issues into high-impact paths, and communicate findings clearly enough that security teams act on them.
 
+Regularly integrates AI tools into offensive security workflows to accelerate reconnaissance, source code review, exploit development, vulnerability research, reporting, and automation while manually validating all findings prior to disclosure.
+
 Three consecutive Hall of Fame recognitions from Fastweb (2024 · 2025 · 2026). Independent parallel discovery of a CVSS 9.8 Critical at Stanford University. Speaker at the Cyber Awareness Virtual Summit 1.0 (October 2025).
 
 This portfolio replaces a traditional degree. Every write-up here was accepted through a legitimate bug bounty or responsible disclosure program.
@@ -161,7 +163,7 @@ Independent study in ethical hacking, networking fundamentals, and web applicati
 
 ## Contact
 
-Open to: Junior Penetration Tester · AppSec Analyst · Offensive Security Researcher  
+Open to: Junior Penetration Tester · AppSec Analyst · AI-Assisted Offensive Security Researcher
 **Remote EU · GCC · Casablanca On-site**
 
 **Email:** iliasslahrach.b@gmail.com  
