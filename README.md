@@ -100,6 +100,37 @@ This portfolio replaces a traditional degree. Every write-up here was accepted t
 | PoC Validation | ★★★★★ | Every submission includes a reproducible, minimal PoC |
 
 ---
+ 
+## AI-Assisted Security Workflows
+ 
+Regularly integrates AI tools into offensive security research to accelerate velocity without compromising accuracy. All AI-generated outputs are manually validated before disclosure.
+ 
+### Tools & Usage
+ 
+| Tool | Role in Workflow |
+|---|---|
+| Claude (Anthropic) | CVSS vector cross-referencing, report drafting, JS source review for XSS sinks, remediation validation |
+| ChatGPT (OpenAI) | Vulnerability triage assistance, payload variant generation, disclosure report structure |
+| GitHub Copilot | PoC scripting acceleration, recon automation tooling |
+| PentestGPT | LLM-guided pentest reasoning — reviewed architecture and probe methodology |
+| Garak | LLM vulnerability scanner — automated probe library for prompt injection and jailbreak testing |
+ 
+### AI Security Knowledge
+ 
+| Area | Detail |
+|---|---|
+| OWASP LLM Top 10 | Familiar with LLM01 (Prompt Injection), LLM02 (Insecure Output Handling), LLM06 (Sensitive Info Disclosure) and full Top 10 |
+| Prompt Injection | Direct and indirect injection — maps to XSS mental model; untrusted input reaching an interpreter |
+| Jailbreak Testing | Authorized bypass testing concepts; Lakera Gandalf / controlled scenarios |
+| AI Output Validation | Identifying hallucinated CVEs, fake APIs, and unverified PoCs — manual verification required on all findings |
+| LLM-Integrated App Security | Testing applications that embed LLMs — insecure plugin design, excessive agency, insecure output handling |
+ 
+### Principle
+ 
+> AI accelerates the workflow. Manual validation owns the finding.
+> Every vulnerability disclosed here was hand-tested and independently confirmed before submission.
+
+---
 
 ## Methodology
 
