@@ -195,7 +195,7 @@ Independent study in ethical hacking, networking fundamentals, and web applicati
 ## Contact
 
 Open to: Junior Penetration Tester · AppSec Analyst · AI-Assisted Offensive Security Researcher
-**Remote EU · GCC · Casablanca On-site**
+**EU · UAE · GCC · On-site**
 
 **Email:** iliasslahrach.b@gmail.com  
 **LinkedIn:** [linkedin.com/in/iliass-lahrach](https://linkedin.com/in/iliass-lahrach)  
