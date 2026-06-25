@@ -178,19 +178,24 @@ Regularly integrates AI tools into offensive security research to accelerate vel
 
 ## Experience
 
-**Independent Bug Bounty Researcher** · Self-Employed · Remote · 2021 – Present  
-Active across HackerOne, Bugcrowd, Intigriti, Open Bug Bounty, and Bugbounter.com. Confirmed findings include: paid bounty on Ticimax (Bugbounter.com, Report #I8435192), Medium-severity Reflected XSS on Picsart (HackerOne, CVSS 5.6), verified Reflected XSS on University of Iceland (Open Bug Bounty, CVSS 6.1, ISO 29147 coordinated), and independently verified findings on Nokia, DHL, InDrive, Ibotta, and Razer.
+**Independent Security Researcher & Bug Bounty Hunter** · Remote · 2021 – Present
 
-**Penetration Tester — Vulnerability Disclosure Program** · Fastweb S.p.A. · Remote · 2024 – 2026  
-Three separate responsible disclosures across Fastweb's production infrastructure. Hall of Fame recognition for 2024 & 2025 and 2026 findings.
+Active across HackerOne, Bugcrowd, Intigriti, Open Bug Bounty, and Bugbounter.com, conducting security assessments of production web applications and APIs. Validated findings include a paid bounty on Ticimax (Bugbounter.com), a Medium-severity Reflected XSS on Picsart (HackerOne, CVSS 5.6), and a verified Reflected XSS on the University of Iceland (Open Bug Bounty, CVSS 6.1). Additional validated reports have impacted organizations including Nokia, DHL, InDrive, Ibotta, Razer, and others.
 
-**Guest Speaker — Cyber Awareness Virtual Summit 1.0** · October 2025  
-Session: *"From Phishing Links to Fake Job Offers: How to Recognize Red Flags Instantly."* Covered homograph attacks, deceptive domain detection, and phishing recognition to an international audience of cybersecurity professionals.
+**Hall of Fame Security Researcher** · Fastweb S.p.A. · Remote · 2024 – 2026
 
-**Self-Directed Study · Ethical Hacking** · 2018 – 2021  
-Independent study in ethical hacking, networking fundamentals, and web application exploitation beginning at age 11. Foundation for structured platform-based research from 2021 onward.
+Recognized in Fastweb's official Hall of Fame for three consecutive years following responsible disclosures affecting production infrastructure. Findings included a vulnerability chain leading to account takeover (2024), an HTML Injection leading to Reflected XSS (2025), and sensitive infrastructure information disclosure through an exposed configuration file (2026).
+
+**Guest Speaker — Cyber Awareness Virtual Summit 1.0** · October 2025
+
+Presented *"From Phishing Links to Fake Job Offers: How to Recognize Red Flags Instantly."* Covered phishing detection, homograph attacks, deceptive domains, and social engineering indicators for an international cybersecurity audience.
+
+**Self-Directed Cybersecurity Learning Journey** · 2018 – 2021
+
+Built a foundation in networking, Linux, web technologies, web application security, and offensive security fundamentals through independent study, practical labs, and hands-on experimentation before transitioning into structured vulnerability research and bug bounty programs.
 
 ---
+
 
 ## Contact
 
