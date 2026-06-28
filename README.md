@@ -205,6 +205,7 @@ Open to: Junior Penetration Tester · AppSec Analyst · AI-Assisted Offensive Se
 **Email:** iliasslahrach.b@gmail.com  
 **LinkedIn:** [linkedin.com/in/iliass-lahrach](https://linkedin.com/in/iliass-lahrach)  
 **GitHub:** [github.com/B6G-K1LLER](https://github.com/B6G-K1LLER)  
+**Portfolio:** [iliass-lahrach.lovable.app](https://iliass-lahrach.lovable.app/)  
 **Platforms:** HackerOne · Bugcrowd · Intigriti · Open Bug Bounty · Bugbounter
 
 > References and full proof-of-concept write-ups available on request.
