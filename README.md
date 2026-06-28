@@ -12,7 +12,7 @@ I'm a self-taught offensive security researcher with findings across major produ
 
 Regularly integrates AI tools into offensive security workflows to accelerate reconnaissance, source code review, exploit development, vulnerability research, reporting, and automation while manually validating all findings prior to disclosure.
 
-Three consecutive Hall of Fame recognitions from Fastweb (2024 · 2025 · 2026). Independent parallel discovery of a CVSS 9.8 Critical at Stanford University. Speaker at the Cyber Awareness Virtual Summit 1.0 (October 2025).
+Three consecutive Hall of Fame recognitions from Fastweb (2024 · 2025 · 2026). Independent parallel discovery of a CVSS 9.8 Critical at Stanford University. Speaker at [the Cyber Awareness Virtual Summit 1.0](https://www.linkedin.com/posts/iliass-lahrach_cybersecurity-phishingawareness-ethicalhacking-ugcPost-7390037910378528768-IlUW/) (October 2025).
 
 This portfolio replaces a traditional degree. Every write-up here was accepted through a legitimate bug bounty or responsible disclosure program.
 
