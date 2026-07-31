@@ -1,215 +1,127 @@
-# Iliass Lahrach — Security Research Portfolio
+# Iliass Lahrach — Web Application Security Research
 
-> **handle:** B6G-K1LLER · **location:** Casablanca, MA · **active since:** 2021  
-> Offensive security researcher specializing in web application vulnerabilities, vulnerability chaining, and responsible disclosure.  
-> Verified findings on production systems operated by **Fastweb**, **Stanford University**, **Nokia**, **DHL**, **Picsart**, and the **University of Iceland**.
+> Casablanca, Morocco · Independent security research since 2021
+> Web application vulnerabilities, vulnerability chaining, and coordinated disclosure.
+> Findings accepted by Fastweb S.p.A., Picsart, and the University of Iceland.
 
 ---
 
 ## About
 
-I'm a self-taught offensive security researcher with findings across major production environments since 2021 — starting at age 11. I don't just find bugs: I trace them to their root cause, chain low-severity issues into high-impact paths, and communicate findings clearly enough that security teams act on them.
+I test production web applications and report what I find through coordinated disclosure. Since 2021 I've submitted findings through HackerOne, Bugcrowd, Intigriti, Open Bug Bounty and Bugbounter, and directly to vendor disclosure programmes.
 
-Regularly integrates AI tools into offensive security workflows to accelerate reconnaissance, source code review, exploit development, vulnerability research, reporting, and automation while manually validating all findings prior to disclosure.
+My strongest work is in attack-path construction: taking issues that are unremarkable in isolation and finding the route that connects them. The 2024 Fastweb chain below is the clearest example — an open redirect on one subdomain used as the delivery vehicle for a CSRF payload that triggers cross-site scripting on a *different* subdomain, crossing the SAML logout flow of an Oracle Access Manager deployment to get there.
 
-Three consecutive Hall of Fame recognitions from Fastweb (2024 · 2025 · 2026). Independent parallel discovery of a CVSS 9.8 Critical at Stanford University. Speaker at [the Cyber Awareness Virtual Summit 1.0](https://www.linkedin.com/posts/iliass-lahrach_cybersecurity-phishingawareness-ethicalhacking-ugcPost-7390037910378528768-IlUW/) (October 2025).
+I don't have a degree. What I have is a public record of findings that companies verified and acted on, and the reports that produced them.
 
-This portfolio replaces a traditional degree. Every write-up here was accepted through a legitimate bug bounty or responsible disclosure program.
-
-**Focus areas:** Web AppSec · API Security · SSO & Auth Flows · Vulnerability Chaining · OSINT & Recon · Responsible Disclosure (ISO 29147)
+**Focus:** Web application testing · Authentication and SSO flows · Vulnerability chaining · Attack surface reconnaissance · Coordinated disclosure (ISO 29147)
 
 ---
 
-## Recognition & Disclosures
+## Disclosures
 
-| Year | Finding | Target | CVSS | Status |
+All Fastweb findings were submitted through the company's official Responsible Disclosure programme and are recognised in its public Hall of Fame for 2024, 2025 and 2026.
+
+| Year | Finding | Target | CVSS v3.1 | Report |
 |---|---|---|---|---|
-| 2024 | [Three-Vulnerability Chain — Full Account Takeover](./writeups/writeup-02-chained-redirect-csrf-xss.md) | Fastweb S.p.A. | **8.8 High** | ✅ Hall of Fame |
-| 2025 | [Chained CSRF → Reflected XSS — Admin Panel](./writeups/writeup-01-chained-csrf-xss.md) | Fastweb S.p.A. | **9.3 Critical** | ✅ Hall of Fame |
-| 2026 | [Information Disclosure — Production Config Exposure](./writeups/writeup-03-info-disclosure-env-config.md) | Fastweb S.p.A. | **5.3 Medium** | ✅ Hall of Fame |
-| —   | Critical Vulnerability — Bug Bounty Program | Stanford University | **9.8 Critical** | ✅ Confirmed Valid · Duplicate |
-| —   | Reflected XSS | Picsart (HackerOne) | **5.6 Medium** | ✅ Resolved & Closed |
-| —   | Reflected XSS | University of Iceland (Open Bug Bounty) | **6.1 Medium** | ✅ ISO 29147 Coordinated |
-| —   | Various findings | Nokia · DHL · InDrive · Ibotta · Razer | — | ✅ Independently Verified |
+| 2024 | Open redirect in OAM federated logout (`p_done_url`, `doneURL`) | Fastweb S.p.A. | 6.1 | RD-0001548 / RD-0001550 |
+| 2024 | [Open redirect to CSRF to reflected XSS, cross-subdomain chain](./writeups/writeup-02-chained-redirect-csrf-xss.md) | Fastweb S.p.A. | 6.1 | RD-0001549 |
+| 2025 | [CSRF to reflected XSS on admin login endpoint](./writeups/writeup-01-chained-csrf-xss.md) | Fastweb S.p.A. | 6.1 | RD-0001622 |
+| 2026 | [Information disclosure — internal address in public `env.js`](./writeups/writeup-03-info-disclosure-env-config.md) | Fastweb S.p.A. | 5.3 | RD-0001807 |
+| — | Reflected XSS | Picsart (HackerOne) | 5.6 | Resolved and closed |
+| — | Reflected XSS | University of Iceland (Open Bug Bounty) | 6.1 | OBB-3799537, ISO 29147 coordinated |
+| — | Validator-approved paid report | Ticimax (Bugbounter) | — | I8435192 |
 
-> Targets are redacted in all public write-ups. Full details available under NDA for verified employers.  
-> Hall of Fame: [fastweb.it/corporate/responsible-disclosure](https://www.fastweb.it/corporate/responsible-disclosure)
+Reports to Nokia, DHL, InDrive, Ibotta, Razer and Stanford University were confirmed valid but closed as duplicates of prior submissions.
+
+Hall of Fame registry: [fastweb.it/corporate/responsible-disclosure](https://www.fastweb.it/corporate/responsible-disclosure)
+
+---
+
+## A note on scoring
+
+The CVSS scores above are not the ones I submitted at the time. Three of them are lower. I've recalibrated them, and the reasoning matters more than the numbers:
+
+| Report | As submitted | Revised | Why |
+|---|---|---|---|
+| RD-0001549 (2024) | 8.8 | 6.1 | I scored `C:H/I:H/A:H`. The proof of concept demonstrated an `alert()` — not data access, not session theft, and certainly not an availability impact. `S:C/C:L/I:L/A:N` is the honest vector. |
+| RD-0001622 (2025) | 9.3 | 6.1 | I scored `C:H/I:H` on a payload that rendered an anchor tag and a heading. No script execution was demonstrated, and the injection point is a pre-authentication login page — there was no session to compromise. |
+| RD-0001548 / RD-0001550 (2024) | 6.3 | 6.1 | `A:L` on an open redirect isn't supportable. Scope change is the better model for a redirect to attacker-controlled infrastructure. |
+| RD-0001807 (2026) | 5.3 | 5.3 | Unchanged. Correct as originally scored. |
+
+The arithmetic in the original submissions was right — each score follows correctly from the vector I entered. The error was in the impact metrics: I was scoring the theoretical worst case a bug class *could* reach rather than what my proof of concept actually demonstrated.
+
+I'm leaving this here rather than quietly restating the numbers. Over-scoring your own findings is the same failure as over-scoring a client's, and a security report is worth exactly what its severity rating can be trusted at. My 2026 report was scored correctly the first time.
 
 ---
 
-## Skills Matrix
+## Technical Focus
 
-### Application Security
+**Validated findings exist in:** reflected XSS, HTML injection, CSRF, open redirect, information disclosure, multi-stage vulnerability chaining.
 
-| Skill | Level | Evidence |
-|---|---|---|
-| Vulnerability Chaining | ★★★★★ | 2 and 3-stage chains; account takeover from individually low-severity issues |
-| Reflected / Stored / DOM XSS | ★★★★★ | Confirmed findings on Fastweb, Picsart, University of Iceland |
-| CSRF Exploitation | ★★★★★ | Chained with XSS twice; admin panel and login endpoint |
-| Open Redirect | ★★★★★ | Used as delivery mechanism, not standalone finding |
-| Broken Access Control / IDOR | ★★★★☆ | Active testing area across scoped programs |
-| SSRF | ★★★★☆ | Tested across API and auth-adjacent endpoints |
-| SQL Injection | ★★★★☆ | EC-Council certified; active in scoped engagements |
-| Authentication / SSO Testing | ★★★★★ | OAM · SAML · OAuth · federated SSO logout chains |
-| Information Disclosure | ★★★★☆ | Config file review, JS bundle analysis, env variable exposure |
-| OWASP Top 10 | ★★★★★ | Findings across A3, A5 (2021); methodology maps to full Top 10 |
-| CVSS v3.1 Scoring | ★★★★★ | Self-scored findings validated by program triage teams |
+**Active testing areas without a validated finding yet:** IDOR and broken access control, SSRF, business logic flaws, SQL injection. Listed separately on purpose — this is where I'm currently hunting, not where I have a track record.
 
-### API & Identity Security
+**Authentication and SSO:** Oracle Access Manager federated logout chains, SAML logout flow analysis, OAuth redirect URI handling. Basis is the Fastweb OAM work above.
 
-| Skill | Level | Notes |
-|---|---|---|
-| OAuth Attack Vectors | ★★★★☆ | Token validation flaws, redirect URI abuse |
-| RBAC Misconfiguration | ★★★★☆ | Privilege escalation paths in access control layers |
-| Session Hijacking | ★★★★★ | Demonstrated in account takeover chain (Fastweb 2024) |
-| Auth Flow Analysis | ★★★★★ | Full logout chain analysis; SSO federation mapping |
-| Microsoft Azure AD / Entra ID | ★★★☆☆ | AZ-500 modules completed (Oct 2025) |
-| Microsoft Defender for Cloud / Sentinel | ★★★☆☆ | AZ-500 modules completed (Oct 2025) |
+**Reconnaissance:** attack surface mapping, subdomain enumeration, favicon hashing via Shodan and Censys, Wayback Machine CDX API for historical file exposure, JavaScript bundle analysis.
 
-### Attack Surface & Recon
+**Tooling:** Burp Suite Professional, FFUF, Nuclei, Nmap, SQLmap, Gobuster, browser developer tools. Python and Bash for recon automation and proof-of-concept scripting.
 
-| Skill | Level | Notes |
-|---|---|---|
-| Favicon Hashing (Shodan / Censys) | ★★★★★ | Primary recon technique; surfaces hidden infrastructure from a single artefact |
-| Wayback Machine CDX API | ★★★★★ | Historical file exposure — backups, deprecated APIs, legacy panels |
-| Subdomain Enumeration | ★★★★★ | FFUF · Gobuster · Nuclei · Nmap |
-| OSINT / Digital Footprinting | ★★★★☆ | Technique shared publicly; 2,800+ security community followers |
-| VirusTotal / URLScan | ★★★★☆ | Infrastructure correlation and fingerprinting |
-
-### Tooling
-
-| Tool | Proficiency | Use Case |
-|---|---|---|
-| Burp Suite Pro | ★★★★★ | Interception · CSRF PoC generation · Repeater · Intruder |
-| Browser DevTools | ★★★★★ | JS file analysis · Network inspection · Source review |
-| SQLmap | ★★★★☆ | Injection testing and enumeration |
-| Metasploit | ★★★☆☆ | Post-exploitation and PoC validation |
-| Python | ★★★★☆ | Custom scripts for recon automation and PoC tooling |
-| Bash | ★★★★☆ | Pipeline automation and recon scripting |
-| Nmap / Nuclei | ★★★★☆ | Port scanning and template-based vulnerability detection |
-| Git | ★★★★☆ | Version control for research tooling and write-up publishing |
-
-### Reporting & Disclosure
-
-| Skill | Level | Notes |
-|---|---|---|
-| Technical Report Writing | ★★★★★ | Root cause · PoC · CVSS · Remediation — every report, no exceptions |
-| ISO 29147 Coordinated Disclosure | ★★★★★ | Standard disclosure method across all programs |
-| CVSS v3.1 Scoring | ★★★★★ | Scores validated by triage teams at Fastweb, HackerOne, Stanford |
-| PTES / MITRE ATT&CK Mapping | ★★★★☆ | Framework alignment in technical documentation |
-| PoC Validation | ★★★★★ | Every submission includes a reproducible, minimal PoC |
-
----
- 
-## AI-Assisted Security Workflows
- 
-Regularly integrates AI tools into offensive security research to accelerate velocity without compromising accuracy. All AI-generated outputs are manually validated before disclosure.
- 
-### Tools & Usage
- 
-| Tool | Role in Workflow |
-|---|---|
-| Claude (Anthropic) | CVSS vector cross-referencing, report drafting, JS source review for XSS sinks, remediation validation |
-| ChatGPT (OpenAI) | Vulnerability triage assistance, payload variant generation, disclosure report structure |
-| GitHub Copilot | PoC scripting acceleration, recon automation tooling |
-| PentestGPT | LLM-guided pentest reasoning — reviewed architecture and probe methodology |
-| Garak | LLM vulnerability scanner — automated probe library for prompt injection and jailbreak testing |
- 
-### AI Security Knowledge
- 
-| Area | Detail |
-|---|---|
-| OWASP LLM Top 10 | Familiar with LLM01 (Prompt Injection), LLM02 (Insecure Output Handling), LLM06 (Sensitive Info Disclosure) and full Top 10 |
-| Prompt Injection | Direct and indirect injection — maps to XSS mental model; untrusted input reaching an interpreter |
-| Jailbreak Testing | Authorized bypass testing concepts; Lakera Gandalf / controlled scenarios |
-| AI Output Validation | Identifying hallucinated CVEs, fake APIs, and unverified PoCs — manual verification required on all findings |
-| LLM-Integrated App Security | Testing applications that embed LLMs — insecure plugin design, excessive agency, insecure output handling |
- 
-### Principle
- 
-> AI accelerates the workflow. Manual validation owns the finding.
-> Every vulnerability disclosed here was hand-tested and independently confirmed before submission.
+**Standards:** OWASP Top 10, CVSS v3.1, PTES, ISO 29147 coordinated disclosure.
 
 ---
 
 ## Methodology
 
 ```
-01 RECONNAISSANCE
-   Favicon hashing · CDX API · Subdomain enumeration · OSINT
-        │
-        ▼
-02 ANALYSIS
-   Manual testing with Burp Suite Pro · Auth flow mapping
-   Business-logic review · Vulnerability chaining assessment
-        │
-        ▼
-03 RISK ASSESSMENT
-   CVSS v3.1 scoring · OWASP Top 10 · PTES · Impact evaluation
-        │
-        ▼
-04 DOCUMENTATION
-   Root cause · PoC · Reproduction steps · Remediation guidance
-        │
-        ▼
-05 RESPONSIBLE DISCLOSURE
-   ISO 29147 coordinated disclosure via VDP channels
-   Patch verification · Follow-up
+01  RECONNAISSANCE     Favicon hashing · CDX API · Subdomain enumeration
+02  ANALYSIS           Manual testing in Burp · Auth flow mapping · Chaining assessment
+03  RISK ASSESSMENT    CVSS v3.1 scored against demonstrated impact, not theoretical ceiling
+04  DOCUMENTATION      Root cause · Reproducible PoC · Reproduction steps · Remediation
+05  DISCLOSURE         ISO 29147 coordinated disclosure · Patch verification · Follow-up
 ```
 
 ---
 
-## Certifications
+## Working with AI
 
-| Credential | Issuer | Date | ID |
-|---|---|---|---|
-| AZ-500: Secure Identity & Access | Microsoft | Oct 2025 | B9S6ZE8D |
-| AZ-500: Secure Networking | Microsoft | Oct 2025 | WVYZLUTN |
-| AZ-500: Secure Compute, Storage & Databases | Microsoft | Oct 2025 | XE7MC88Y |
-| AZ-500: Defender for Cloud & Microsoft Sentinel | Microsoft | Oct 2025 | UAWYJ6F3 |
-| Ethical Hacker | Cisco (Credly) | Nov 2024 | — |
-| Ethical Hacking Essentials (EHE) | EC-Council | Nov 2023 | 263878 |
-| SQL Injection Attacks | EC-Council | Oct 2025 | 6c31ad70 |
-| Offensive Security Junior | RedOps Academy | Oct 2025 | d7b4b617a158f911 |
-| Certified Cybersecurity Educator Professional (CCEP) | Red Team Leaders | Nov 2025 | 09e309c886f97726 |
-| Counter-Terrorism & Cryptocurrency Investigations | UNOCT | Oct 2025 | Score: 100% |
+I use language models for report drafting, JavaScript source review, and CVSS vector cross-referencing, and I validate every finding by hand before submission. I also test LLM-integrated applications — prompt injection maps cleanly onto the XSS mental model of untrusted input reaching an interpreter — and I work from the OWASP LLM Top 10.
 
 ---
 
 ## Experience
 
-**Independent Security Researcher & Bug Bounty Hunter** · Remote · 2021 – Present
+**Offensive Security Contractor** — Al Nukhba Finance Consulting Limited · Remote · Jun 2026 – present
+Web application vulnerability assessments for banking and enterprise clients in the UAE and GCC. Scoping, OWASP Top 10 methodology, CVSS v3.1 scoring, and findings reports written for both engineering and executive audiences. Delivered under client SOW and NDA.
 
-Active across HackerOne, Bugcrowd, Intigriti, Open Bug Bounty, and Bugbounter.com, conducting security assessments of production web applications and APIs. Validated findings include a paid bounty on Ticimax (Bugbounter.com), a Medium-severity Reflected XSS on Picsart (HackerOne, CVSS 5.6), and a verified Reflected XSS on the University of Iceland (Open Bug Bounty, CVSS 6.1). Additional validated reports have impacted organizations including Nokia, DHL, InDrive, Ibotta, Razer, and others.
+**Independent Security Researcher** — Self-employed · Remote · Jan 2021 – present
+Testing production web applications across HackerOne, Bugcrowd, Intigriti, Open Bug Bounty and Bugbounter, plus direct vendor disclosure programmes. Every submission is a structured report: root cause, reproducible proof of concept, CVSS v3.1 vector, remediation guidance.
 
-**Hall of Fame Security Researcher** · Fastweb S.p.A. · Remote · 2024 – 2026
-
-Recognized in Fastweb's official Hall of Fame for three consecutive years following responsible disclosures affecting production infrastructure. Findings included a vulnerability chain leading to account takeover (2024), an HTML Injection leading to Reflected XSS (2025), and sensitive infrastructure information disclosure through an exposed configuration file (2026).
-
-**Guest Speaker — Cyber Awareness Virtual Summit 1.0** · October 2025
-
-Presented *"From Phishing Links to Fake Job Offers: How to Recognize Red Flags Instantly."* Covered phishing detection, homograph attacks, deceptive domains, and social engineering indicators for an international cybersecurity audience.
-
-**Self-Directed Cybersecurity Learning Journey** · 2018 – 2021
-
-Built a foundation in networking, Linux, web technologies, web application security, and offensive security fundamentals through independent study, practical labs, and hands-on experimentation before transitioning into structured vulnerability research and bug bounty programs.
+**Guest Speaker** — [Cyber Awareness Virtual Summit 1.0](https://www.linkedin.com/posts/iliass-lahrach_cybersecurity-phishingawareness-ethicalhacking-ugcPost-7390037910378528768-IlUW/) · Oct 2025
+"From Phishing Links to Fake Job Offers: How to Recognize Red Flags Instantly." Phishing detection, homograph attacks, deceptive domain identification.
 
 ---
 
+## Certifications
+
+| Credential | Issuer | Date |
+|---|---|---|
+| AZ-500 Azure Security Technologies (learning path complete, exam pending) | Microsoft | Oct 2025 |
+| Ethical Hacker | Cisco Networking Academy | Nov 2024 |
+| Ethical Hacking Essentials | EC-Council | Nov 2023 |
+| Offensive Security Junior | RedOps Academy | Oct 2025 |
+| Counter-Terrorism and Cryptocurrency Investigations (100%) | UN Office of Counter-Terrorism | Oct 2025 |
+
+---
 
 ## Contact
 
-Open to: Junior Penetration Tester · AppSec Analyst · AI-Assisted Offensive Security Researcher
-**EU · UAE · GCC · On-site**
-
-**Email:** iliasslahrach.b@gmail.com  
-**LinkedIn:** [linkedin.com/in/iliass-lahrach](https://linkedin.com/in/iliass-lahrach)  
-**GitHub:** [github.com/B6G-K1LLER](https://github.com/B6G-K1LLER)  
-**Portfolio:** [iliass-lahrach.lovable.app](https://iliass-lahrach.lovable.app/)  
+**Email:** iliasslahrach.b@gmail.com
+**LinkedIn:** [linkedin.com/in/iliass-lahrach](https://linkedin.com/in/iliass-lahrach)
 **Platforms:** HackerOne · Bugcrowd · Intigriti · Open Bug Bounty · Bugbounter
 
-> References and full proof-of-concept write-ups available on request.
+Open to junior penetration testing and application security roles — Casablanca or remote.
 
 ---
 
-*All research conducted legally under responsible disclosure programs or authorized bug bounty programs. No systems were accessed without permission. ISO 29147 coordinated disclosure on every engagement.*
+*All research conducted under authorized bug bounty or coordinated disclosure programmes. Target details are withheld for any finding not confirmed remediated.*
