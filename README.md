@@ -120,8 +120,7 @@ Testing production web applications across HackerOne, Bugcrowd, Intigriti, Open 
 **LinkedIn:** [linkedin.com/in/iliass-lahrach](https://linkedin.com/in/iliass-lahrach)
 **Platforms:** HackerOne · Bugcrowd · Intigriti · Open Bug Bounty · Bugbounter
 
-Open to junior penetration testing and application security roles — Casablanca or remote.
-
+Open to penetration testing, application security and vulnerability research roles — Casablanca or remote.
 ---
 
 *All research conducted under authorized bug bounty or coordinated disclosure programmes. Target details are withheld for any finding not confirmed remediated.*
