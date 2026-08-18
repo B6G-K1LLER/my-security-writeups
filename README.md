@@ -91,7 +91,7 @@ I use language models for report drafting, JavaScript source review, and CVSS ve
 
 ## Experience
 
-**Offensive Security Contractor** — Al Nukhba Finance Consulting Limited · Remote · Jun 2026 – present
+**Offensive Security (Partnership)** — Al Nukhba Finance Consulting Limited · Remote · Jun 2026 – present
 Web application vulnerability assessments for banking and enterprise clients in the UAE and GCC. Scoping, OWASP Top 10 methodology, CVSS v3.1 scoring, and findings reports written for both engineering and executive audiences. Delivered under client SOW and NDA.
 
 **Independent Security Researcher** — Self-employed · Remote · Jan 2021 – present
